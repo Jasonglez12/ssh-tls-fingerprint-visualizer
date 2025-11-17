@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  app:
+    image: python:3.11-slim
+    working_dir: /work
+    volumes:
+      - ./:/work
+    command: bash -lc "tail -f /dev/null"  # keep container running
+    # If you later want auto-install on start, you can switch to:
+    # command: bash -lc "python -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt && tail -f /dev/null"
