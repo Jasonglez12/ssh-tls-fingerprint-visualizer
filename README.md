@@ -40,3 +40,12 @@ source .venv/bin/activate   # Linux/macOS
 # 3) run collectors
 python scripts/fingerprint_tls.py example.com:443
 python scripts/fingerprint_ssh.py github.com
+```
+
+## Project Board
+
+We track work on a simple Kanban board with four columns: **Backlog → In Progress → Review → Done**.
+
+**Milestones:** Week 10 (Proposal) • Week 12 (Alpha) • Week 14 (Beta) • Week 16 (Final)
+
+See details and task list in [`docs/PROJECT_BOARD.md`](docs/PROJECT_BOARD.md).
