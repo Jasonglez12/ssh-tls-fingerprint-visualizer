@@ -1,0 +1,62 @@
+# C++ Build
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+*.vcxproj*
+*.sln
+*.xcodeproj
+*.xcworkspace
+*.pbxproj
+
+# Binaries
+*.exe
+*.out
+*.app
+*.dylib
+*.dll
+*.so
+*.a
+*.lib
+*.pdb
+*.exp
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.user
+*.suo
+*.sdf
+*.opensdf
+*.VC.db
+
+# Data files (keep structure but ignore actual data)
+data/*.csv
+data/*.json
+data/*.png
+!data/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
