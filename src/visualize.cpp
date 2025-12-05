@@ -63,7 +63,7 @@ public:
     }
     
     static void generate_summary_data(const std::vector<FingerprintRecord>& records, const std::string& output_file) {
-        // Count fingerprints per host
+        // Count fingerprints per host (including JA3/JA3S)
         std::map<std::string, std::map<std::string, int>> host_counts;
         std::map<std::string, std::set<std::string>> host_fingerprints;
         
@@ -87,6 +87,8 @@ public:
             file << "      \"host\": \"" << host << "\",\n";
             file << "      \"tls_count\": " << (counts.find("TLS") != counts.end() ? counts.at("TLS") : 0) << ",\n";
             file << "      \"ssh_count\": " << (counts.find("SSH") != counts.end() ? counts.at("SSH") : 0) << ",\n";
+            file << "      \"ja3_count\": " << (counts.find("JA3") != counts.end() ? counts.at("JA3") : 0) << ",\n";
+            file << "      \"ja3s_count\": " << (counts.find("JA3S") != counts.end() ? counts.at("JA3S") : 0) << ",\n";
             file << "      \"unique_fingerprints\": " << host_fingerprints[host].size() << "\n";
             file << "    }";
         }
@@ -111,16 +113,20 @@ public:
         
         std::cout << "\n=== Fingerprint Summary ===\n\n";
         std::cout << std::left << std::setw(30) << "Host" 
-                  << std::setw(10) << "TLS" 
-                  << std::setw(10) << "SSH" 
-                  << std::setw(20) << "Unique FPs" << std::endl;
-        std::cout << std::string(70, '-') << std::endl;
+                  << std::setw(8) << "TLS" 
+                  << std::setw(8) << "SSH"
+                  << std::setw(8) << "JA3"
+                  << std::setw(8) << "JA3S"
+                  << std::setw(15) << "Unique FPs" << std::endl;
+        std::cout << std::string(77, '-') << std::endl;
         
         for (const auto& [host, counts] : host_counts) {
             std::cout << std::left << std::setw(30) << host
-                      << std::setw(10) << (counts.find("TLS") != counts.end() ? std::to_string(counts.at("TLS")) : "0")
-                      << std::setw(10) << (counts.find("SSH") != counts.end() ? std::to_string(counts.at("SSH")) : "0")
-                      << std::setw(20) << host_fingerprints[host].size() << std::endl;
+                      << std::setw(8) << (counts.find("TLS") != counts.end() ? std::to_string(counts.at("TLS")) : "0")
+                      << std::setw(8) << (counts.find("SSH") != counts.end() ? std::to_string(counts.at("SSH")) : "0")
+                      << std::setw(8) << (counts.find("JA3") != counts.end() ? std::to_string(counts.at("JA3")) : "0")
+                      << std::setw(8) << (counts.find("JA3S") != counts.end() ? std::to_string(counts.at("JA3S")) : "0")
+                      << std::setw(15) << host_fingerprints[host].size() << std::endl;
         }
         std::cout << std::endl;
     }

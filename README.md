@@ -25,9 +25,11 @@ Solo scope uses SHA-256 for SSH/TLS. Pair uplift adds **JA3/JA3S** (from PCAP), 
 - **Simple charts** - Visualize fingerprint changes over time
 - **Evaluation dataset** - Generate test data with known-good fingerprints
 
-### Future Features (Pair - Week 16)
-- Parse PCAPs for **JA3/JA3S** and visualize distributions
-- Advanced drift alerts
+### Final Features (Week 16) ✨
+- **JA3/JA3S fingerprinting** - Extract TLS client/server fingerprints from PCAP files
+- **PCAP analysis tool** - `fingerprint_pcap` for analyzing network captures
+- **Advanced drift alerts** - Webhook integration for automated monitoring
+- **Enhanced visualizations** - Support for JA3/JA3S in charts and statistics
 
 ---
 
@@ -39,6 +41,8 @@ Solo scope uses SHA-256 for SSH/TLS. Pair uplift adds **JA3/JA3S** (from PCAP), 
 - **CMake 3.15+**
 - **OpenSSL development libraries**
 - For SSH collector: OpenSSH client tools (`ssh-keyscan`, `ssh-keygen`)
+- **Optional for PCAP support:** libpcap development libraries
+- **Optional for webhook alerts:** libcurl development libraries
 
 ### Build
 
@@ -80,6 +84,12 @@ cmake --build .
 # 7) (Beta) Visualize fingerprint changes (generates JSON data files)
 ./build/visualize timeline --data-dir data --output data/timeline.json
 ./build/visualize summary --data-dir data --output data/summary.json
+
+# 8) (Week 16) Extract JA3/JA3S fingerprints from PCAP file
+./build/fingerprint_pcap capture.pcap --data-dir data --stats
+
+# 9) (Week 16) Baseline diff with alerts
+./build/baseline_diff diff --baseline data/baseline.json --alert-webhook https://hooks.slack.com/services/YOUR/WEBHOOK/URL
 ```
 
 ## Project Board
@@ -165,6 +175,7 @@ Fingerprints are stored in the `data/` directory:
 - `baseline_diff` - Baseline management and comparison (Beta)
 - `visualize` - Generate visualization data files (Beta)
 - `generate_eval_set` - Generate evaluation dataset (Beta)
+- `fingerprint_pcap` - Extract JA3/JA3S fingerprints from PCAP files (Week 16)
 
 ## Project Structure
 

@@ -209,6 +209,18 @@ std::vector<FingerprintRecord> FingerprintStorage::load_all(const std::string& t
         all_records.insert(all_records.end(), ssh_records.begin(), ssh_records.end());
     }
     
+    if (type == "JA3" || type.empty()) {
+        std::string json_path = get_json_path("JA3");
+        auto ja3_records = JSONWriter::read_all(json_path);
+        all_records.insert(all_records.end(), ja3_records.begin(), ja3_records.end());
+    }
+    
+    if (type == "JA3S" || type.empty()) {
+        std::string json_path = get_json_path("JA3S");
+        auto ja3s_records = JSONWriter::read_all(json_path);
+        all_records.insert(all_records.end(), ja3s_records.begin(), ja3s_records.end());
+    }
+    
     return all_records;
 }
 

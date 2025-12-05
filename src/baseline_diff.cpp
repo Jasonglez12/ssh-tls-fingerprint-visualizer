@@ -1,5 +1,6 @@
 #include "fingerprint_common.h"
 #include "utils.h"
+#include "alert_manager.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -107,6 +108,13 @@ int main(int argc, char* argv[]) {
         std::cerr << "Usage: " << argv[0] << " <create|diff> [options]" << std::endl;
         std::cerr << "  create: Create baseline from current fingerprints" << std::endl;
         std::cerr << "  diff: Compare current fingerprints against baseline" << std::endl;
+        std::cerr << "\nOptions:" << std::endl;
+        std::cerr << "  --baseline PATH        Baseline file path (default: data/baseline.json)" << std::endl;
+        std::cerr << "  --data-dir PATH        Data directory (default: data)" << std::endl;
+        std::cerr << "  --type TLS|SSH         Filter by fingerprint type" << std::endl;
+        std::cerr << "  --output PATH          Save diff results to file" << std::endl;
+        std::cerr << "  --alert-config PATH    Send alerts using config file" << std::endl;
+        std::cerr << "  --alert-webhook URL    Send alerts to webhook URL" << std::endl;
         return 1;
     }
     
@@ -187,6 +195,45 @@ int main(int argc, char* argv[]) {
             file << "}\n";
             file.close();
             std::cout << "✓ Results saved to " << output_file << std::endl;
+        }
+        
+        // Send alerts if changes detected
+        bool send_alerts = false;
+        std::string alert_config_file = "";
+        std::string webhook_url = "";
+        
+        // Check for alert options
+        for (int i = 2; i < argc; ++i) {
+            std::string arg = argv[i];
+            if (arg == "--alert-config" && i + 1 < argc) {
+                alert_config_file = argv[++i];
+                send_alerts = true;
+            } else if (arg == "--alert-webhook" && i + 1 < argc) {
+                webhook_url = argv[++i];
+                send_alerts = true;
+            }
+        }
+        
+        if (send_alerts && (!diff_result.changed.empty() || !diff_result.new_records.empty())) {
+            AlertManager alert_mgr;
+            
+            if (!alert_config_file.empty()) {
+                alert_mgr.load_config(alert_config_file);
+            } else if (!webhook_url.empty()) {
+                AlertConfig config;
+                config.webhook_enabled = true;
+                config.webhook_url = webhook_url;
+                alert_mgr.set_config(config);
+            }
+            
+            AlertData alert_data;
+            alert_data.title = "Fingerprint Change Alert";
+            alert_data.timestamp = utils::get_current_timestamp();
+            alert_data.message = "Fingerprint changes detected during baseline comparison.";
+            alert_data.changed_records = diff_result.changed;
+            alert_data.new_records = diff_result.new_records;
+            
+            alert_mgr.send_alert(alert_data);
         }
         
         // Exit with error code if changes detected
