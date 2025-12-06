@@ -2,10 +2,23 @@ version: "3.9"
 
 services:
   app:
-    image: python:3.11-slim
-    working_dir: /work
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fingerprint-visualizer
+    working_dir: /app
     volumes:
-      - ./:/work
-    command: bash -lc "tail -f /dev/null"  # keep container running
-    # If you later want auto-install on start, you can switch to:
-    # command: bash -lc "python -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt && tail -f /dev/null"
+      - ./data:/app/data
+      - ./artifacts:/app/artifacts
+    environment:
+      - DATA_DIR=/app/data
+      - ARTIFACTS_DIR=/app/artifacts
+    networks:
+      - fingerprint-network
+    # Keep container running for interactive use
+    command: tail -f /dev/null
+    # For demo, use: command: /app/scripts/demo.sh
+
+networks:
+  fingerprint-network:
+    driver: bridge

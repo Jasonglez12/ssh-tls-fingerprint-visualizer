@@ -1,0 +1,15 @@
+build/
+.git/
+.gitignore
+*.md
+docs/
+artifacts/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+cmake-build-*/
+*.exe
+data/

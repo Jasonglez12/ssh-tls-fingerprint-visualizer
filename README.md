@@ -35,7 +35,22 @@ Solo scope uses SHA-256 for SSH/TLS. Pair uplift adds **JA3/JA3S** (from PCAP), 
 
 ## Quick Start
 
-### Prerequisites
+### Using Docker (Recommended)
+
+```bash
+# Clone repository
+git clone <repository-url>
+cd ssh-tls-fingerprint-visualizer
+
+# Build and run demo
+make up && make demo
+```
+
+This will build the Docker image and run a complete end-to-end demonstration.
+
+### Native Build
+
+#### Prerequisites
 
 - **C++17 compiler** (GCC 8+, Clang 8+, MSVC 2019+)
 - **CMake 3.15+**
@@ -92,13 +107,18 @@ cmake --build .
 ./build/baseline_diff diff --baseline data/baseline.json --alert-webhook https://hooks.slack.com/services/YOUR/WEBHOOK/URL
 ```
 
-## Project Board
+## Documentation
 
-We track work on a simple Kanban board with four columns: **Backlog → In Progress → Review → Done**.
+- **[Architecture](docs/ARCHITECTURE.md)** - System design, components, and data flow
+- **[Runbook](docs/RUNBOOK.md)** - Operational guide with rebuild instructions and troubleshooting
+- **[Security](docs/SECURITY.md)** - Security invariants, hardening measures, and threat model
+- **[Summary](docs/SUMMARY.md)** - What works and what's next
+- **[Evaluation](EVALUATION.md)** - Initial results and observations
+- **[PCAP Analysis Guide](PCAP_ANALYSIS.md)** - Using the PCAP analysis tool
+- **[Quick Start](QUICK_START.md)** - Quick start guide for Windows users
+- **[Build Instructions](BUILD.md)** - Detailed build instructions
 
-**Milestones:** Week 10 (Proposal) ✅ • Week 12 (Alpha) ✅ • Week 14 (Beta) ✅ • Week 16 (Final)
-
-See details and task list in [`PROJECT_BOARD.md`](PROJECT_BOARD.md).
+**Milestones:** Week 10 (Proposal) ✅ • Week 12 (Alpha) ✅ • Week 14 (Beta) ✅ • Week 16 (Final) ✅
 
 ---
 

@@ -35,13 +35,33 @@ test: build
 	@cd $(BUILD_DIR) && ./fingerprint_tls github.com:443 || echo "Test requires network connectivity"
 	@cd $(BUILD_DIR) && ./fingerprint_ssh github.com || echo "Test requires network connectivity and ssh-keyscan"
 
-# Docker targets (optional)
+# Docker targets
 up:
-	@if command -v docker compose >/dev/null 2>&1; then docker compose up -d; \
-	elif command -v docker-compose >/dev/null 2>&1; then docker-compose up -d; \
-	else echo "Docker Compose not installed."; fi
+	@echo "Building and starting Docker containers..."
+	@if command -v docker compose >/dev/null 2>&1; then \
+		docker compose build; \
+		docker compose up -d; \
+	elif command -v docker-compose >/dev/null 2>&1; then \
+		docker-compose build; \
+		docker-compose up -d; \
+	else \
+		echo "Docker Compose not installed. Please install Docker and Docker Compose."; \
+		exit 1; \
+	fi
 
 down:
 	@if command -v docker compose >/dev/null 2>&1; then docker compose down; \
 	elif command -v docker-compose >/dev/null 2>&1; then docker-compose down; \
-	else echo "Docker Compose not installed."; fi
+	fi
+
+demo: up
+	@echo "Running end-to-end demonstration..."
+	@if command -v docker compose >/dev/null 2>&1; then \
+		docker compose exec -T app /bin/bash /app/scripts/demo.sh; \
+	elif command -v docker-compose >/dev/null 2>&1; then \
+		docker-compose exec -T app /bin/bash /app/scripts/demo.sh; \
+	fi
+
+demo-local: build
+	@echo "Running local demonstration (without Docker)..."
+	@bash scripts/demo.sh || echo "Demo script requires bash and network connectivity"
