@@ -1,10 +1,51 @@
 # How to Run the Project
 
-## Current Status
+## Quick Start with Docker (Recommended)
 
-The build is encountering OpenSSL dependency issues. Here are the steps to resolve and run:
+The easiest way to run the project is using Docker, which handles all dependencies automatically:
 
-## Option 1: Quick Setup (Recommended)
+```bash
+# Clone repository
+git clone <repository-url>
+cd ssh-tls-fingerprint-visualizer
+
+# Build and start Docker container
+make up
+
+# Run the complete end-to-end demo
+make demo
+```
+
+This will:
+1. Build the Docker image with all dependencies
+2. Start the container
+3. Run a full demonstration of the fingerprint visualizer
+
+### Docker Commands
+
+```bash
+# Build and start container
+make up
+
+# Run demo (vertical slice: collect → baseline → compare → visualize)
+make demo
+
+# Stop container
+make down
+
+# Run commands inside container
+docker compose exec app /bin/bash
+```
+
+See [docs/RUNBOOK.md](docs/RUNBOOK.md) for detailed Docker instructions and troubleshooting.
+
+---
+
+## Alternative: Native Build
+
+If you prefer to build natively without Docker, follow these options:
+
+## Option 1: Quick Setup (Windows)
 
 ### Step 1: Install OpenSSL Development Headers
 
@@ -230,5 +271,28 @@ And a file created at: `data\tls_fingerprints.json`
 
 ---
 
-**Need Help?** Check `BUILD.md` for more detailed build instructions.
+---
+
+## Docker vs Native Build
+
+**Recommendation:** Use Docker for easiest setup and consistency across environments.
+
+**Use Docker if:**
+- You want the quickest setup
+- You want to avoid dependency management
+- You need a reproducible environment
+- You're running the demo or testing
+
+**Use Native Build if:**
+- You need to modify the code frequently
+- You prefer working directly with executables
+- You have all dependencies already installed
+- You're developing new features
+
+---
+
+**Need Help?** 
+- Docker setup: See [docs/RUNBOOK.md](docs/RUNBOOK.md)
+- Build instructions: See [BUILD.md](BUILD.md)
+- Quick start: See [QUICK_START.md](QUICK_START.md)
 
