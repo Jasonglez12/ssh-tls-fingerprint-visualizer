@@ -1,0 +1,3 @@
+Attempted to start lab network with `docker-compose up`, but `docker-compose` is not installed in the environment.
+Attempted `docker compose up`, but `docker` is not installed in the environment.
+Attempted to install tcpdump via `apt-get`, but package downloads were blocked by a 403 proxy error (see /tmp/apt.log output).
