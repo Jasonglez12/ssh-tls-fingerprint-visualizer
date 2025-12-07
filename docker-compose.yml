@@ -5,7 +5,18 @@ services:
     image: python:3.11-slim
     working_dir: /work
     volumes:
-      - ./:/work
-    command: bash -lc "tail -f /dev/null"  # keep container running
+      - ./:/work:rw
+      - ./data:/work/data:rw
+      - ./build:/work/build:rw
+      - ./release/artifacts:/work/release/artifacts:rw
+      - ./release/artifacts/pcaps:/work/release/artifacts/pcaps:rw
+      - ./release/artifacts/logs:/work/release/artifacts/logs:rw
+    environment:
+      DATA_DIR: /work/data
+      ARTIFACT_DIR: /work/release/artifacts
+      PCAP_DIR: /work/release/artifacts/pcaps
+      LOG_DIR: /work/release/artifacts/logs
+    command: >
+      bash -lc "mkdir -p /work/data /work/build /work/release/artifacts/pcaps /work/release/artifacts/logs && tail -f /dev/null"
     # If you later want auto-install on start, you can switch to:
     # command: bash -lc "python -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt && tail -f /dev/null"
