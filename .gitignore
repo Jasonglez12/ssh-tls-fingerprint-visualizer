@@ -45,6 +45,9 @@ data/*.json
 data/*.png
 !data/.gitkeep
 
+# Generated release artifacts
+release/artifacts/figures/*.png
+
 # IDE
 .vscode/
 .idea/
