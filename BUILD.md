@@ -129,6 +129,47 @@ cmake .. -DOPENSSL_ROOT_DIR=C:/OpenSSL-Win64
 - Windows: Install Git for Windows or OpenSSH for Windows
 - The SSH collector will fail gracefully if ssh-keyscan is not available
 
+## Reproducibility
+
+The repository ships a fully automated demo run to make deterministic outputs easy to regenerate.
+
+1. Start from a clean slate and boot the helper container (optional but verified as part of the flow):
+
+   ```bash
+   make clean
+   make up
+   ```
+
+2. Run the deterministic demo pipeline:
+
+   ```bash
+   make demo
+   ```
+
+   - Uses `data/demo_hosts.txt` for fixed input hosts (TLS: `example.com:443`, SSH: `github.com:22`).
+   - Applies a default timestamp `2024-01-01T00:00:00.000Z` and seed `1337` for every collector call. Override with `DEMO_TIMESTAMP=<iso8601>` and `DEMO_SEED=<int>` if needed.
+   - Captures the execution log at `release/artifacts/demo_run.log`.
+
+3. Inspect reproducible artifacts (all timestamps normalized):
+
+   - `release/artifacts/tls_fingerprints.csv` / `.json`
+   - `release/artifacts/ssh_fingerprints.csv` / `.json`
+   - `release/artifacts/eval_metadata.json`
+   - `release/artifacts/baseline.json`
+   - `release/artifacts/SHA256SUMS.txt` (hashes over every artifact for quick verification)
+
+4. Verify the run by checking the printed hashes:
+
+   ```bash
+   cat release/artifacts/SHA256SUMS.txt
+   ```
+
+If you prefer to call binaries directly, each collector accepts reproducibility flags:
+
+- `fingerprint_tls` and `fingerprint_ssh`: `--timestamp <iso8601>` to pin record timestamps.
+- `generate_eval_set`: `--hosts-file <path>`, `--seed <int>` to deterministically shuffle, and `--timestamp <iso8601>` to propagate fixed timestamps through child collectors and metadata.
+- `baseline_diff`: `--timestamp <iso8601>` to normalize baseline metadata output.
+
 ## Installation
 
 After building, you can install the executables:

@@ -5,6 +5,8 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <random>
+#include <algorithm>
 
 struct EvalHost {
     std::string host;
@@ -21,17 +23,25 @@ const std::vector<EvalHost> DEFAULT_HOSTS = {
     {"www.cloudflare.com", 443, "TLS"},
 };
 
-int collect_tls_fingerprint(const std::string& host, int port, const std::string& data_dir) {
+int collect_tls_fingerprint(const std::string& host, int port, const std::string& data_dir, int timeout, const std::string& timestamp_override) {
     std::stringstream cmd;
-    cmd << "fingerprint_tls " << host << ":" << port << " --data-dir " << data_dir;
-    
+    cmd << "./fingerprint_tls " << host << ":" << port << " --data-dir " << data_dir;
+    cmd << " --timeout " << timeout;
+    if (!timestamp_override.empty()) {
+        cmd << " --timestamp \"" << timestamp_override << "\"";
+    }
+
     return system(cmd.str().c_str());
 }
 
-int collect_ssh_fingerprint(const std::string& host, int port, const std::string& data_dir) {
+int collect_ssh_fingerprint(const std::string& host, int port, const std::string& data_dir, int timeout, const std::string& timestamp_override) {
     std::stringstream cmd;
-    cmd << "fingerprint_ssh " << host << ":" << port << " --data-dir " << data_dir;
-    
+    cmd << "./fingerprint_ssh " << host << ":" << port << " --data-dir " << data_dir;
+    cmd << " --timeout " << timeout;
+    if (!timestamp_override.empty()) {
+        cmd << " --timestamp \"" << timestamp_override << "\"";
+    }
+
     return system(cmd.str().c_str());
 }
 
@@ -39,7 +49,12 @@ int main(int argc, char* argv[]) {
     std::string data_dir = "data";
     int timeout = 10;
     std::vector<EvalHost> hosts = DEFAULT_HOSTS;
-    
+    std::string hosts_file;
+    std::string timestamp_override;
+    bool should_shuffle = false;
+    unsigned int seed = 0;
+    bool allow_failures = false;
+
     // Parse arguments
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
@@ -47,6 +62,15 @@ int main(int argc, char* argv[]) {
             data_dir = argv[++i];
         } else if (arg == "--timeout" && i + 1 < argc) {
             timeout = std::stoi(argv[++i]);
+        } else if (arg == "--hosts-file" && i + 1 < argc) {
+            hosts_file = argv[++i];
+        } else if (arg == "--timestamp" && i + 1 < argc) {
+            timestamp_override = argv[++i];
+        } else if (arg == "--seed" && i + 1 < argc) {
+            seed = static_cast<unsigned int>(std::stoul(argv[++i]));
+            should_shuffle = true;
+        } else if (arg == "--allow-failures") {
+            allow_failures = true;
         } else if (arg == "--hosts") {
             // Parse custom hosts
             hosts.clear();
@@ -71,9 +95,41 @@ int main(int argc, char* argv[]) {
             --i; // Adjust for loop increment
         }
     }
-    
+
+    // Load hosts from file if provided
+    if (!hosts_file.empty()) {
+        hosts.clear();
+        std::ifstream file(hosts_file);
+        std::string line;
+        while (std::getline(file, line)) {
+            line = utils::trim(line);
+            if (line.empty() || line[0] == '#') continue;
+
+            auto tokens = utils::split(line, ':');
+            if (tokens.size() == 3) {
+                EvalHost host;
+                host.type = utils::to_upper(tokens[0]);
+                host.host = tokens[1];
+                try {
+                    host.port = std::stoi(tokens[2]);
+                    hosts.push_back(host);
+                } catch (...) {
+                    std::cerr << "Invalid port in host file: " << line << std::endl;
+                }
+            } else {
+                std::cerr << "Invalid line in host file: " << line << " (expected TYPE:HOST:PORT)" << std::endl;
+            }
+        }
+    }
+
+    // Shuffle using deterministic seed when provided
+    if (should_shuffle) {
+        std::mt19937 rng(seed);
+        std::shuffle(hosts.begin(), hosts.end(), rng);
+    }
+
     std::cout << "Generating evaluation dataset...\n" << std::endl;
-    
+
     int success_count = 0;
     int failed_count = 0;
     std::vector<EvalHost> successful;
@@ -85,9 +141,9 @@ int main(int argc, char* argv[]) {
         
         int result = 0;
         if (eval_host.type == "TLS") {
-            result = collect_tls_fingerprint(eval_host.host, eval_host.port, data_dir);
+            result = collect_tls_fingerprint(eval_host.host, eval_host.port, data_dir, timeout, timestamp_override);
         } else if (eval_host.type == "SSH") {
-            result = collect_ssh_fingerprint(eval_host.host, eval_host.port, data_dir);
+            result = collect_ssh_fingerprint(eval_host.host, eval_host.port, data_dir, timeout, timestamp_override);
         } else {
             std::cerr << "Unknown type: " << eval_host.type << std::endl;
             failed.push_back(eval_host);
@@ -122,7 +178,13 @@ int main(int argc, char* argv[]) {
     std::string eval_file = data_dir + "/eval_metadata.json";
     std::ofstream file(eval_file);
     file << "{\n";
-    file << "  \"created\": \"" << utils::get_current_timestamp() << "\",\n";
+    file << "  \"created\": \"" << utils::resolve_timestamp(timestamp_override) << "\",\n";
+    if (!hosts_file.empty()) {
+        file << "  \"hosts_file\": \"" << hosts_file << "\",\n";
+    }
+    if (should_shuffle) {
+        file << "  \"seed\": " << seed << ",\n";
+    }
     file << "  \"hosts\": [\n";
     
     for (size_t i = 0; i < successful.size(); ++i) {
@@ -154,6 +216,6 @@ int main(int argc, char* argv[]) {
     
     std::cout << "\n✓ Evaluation metadata saved to " << eval_file << std::endl;
     
-    return failed_count > 0 ? 1 : 0;
+    return (failed_count > 0 && !allow_failures) ? 1 : 0;
 }
 

@@ -1,0 +1,3 @@
+# TYPE:HOST:PORT entries for reproducible demo runs
+TLS:example.com:443
+SSH:github.com:22

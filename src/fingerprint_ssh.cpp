@@ -91,13 +91,14 @@ private:
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <host[:port]> [--data-dir DIR] [--timeout SECONDS]" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <host[:port]> [--data-dir DIR] [--timeout SECONDS] [--timestamp FIXED]" << std::endl;
         return 1;
     }
-    
+
     std::string target = argv[1];
     std::string data_dir = "data";
     int timeout = 10;
+    std::string timestamp_override;
     
     // Parse arguments
     for (int i = 2; i < argc; ++i) {
@@ -106,6 +107,8 @@ int main(int argc, char* argv[]) {
             data_dir = argv[++i];
         } else if (arg == "--timeout" && i + 1 < argc) {
             timeout = std::stoi(argv[++i]);
+        } else if (arg == "--timestamp" && i + 1 < argc) {
+            timestamp_override = argv[++i];
         }
     }
     
@@ -135,7 +138,7 @@ int main(int argc, char* argv[]) {
     
     // Save fingerprint
     FingerprintRecord record;
-    record.timestamp = utils::get_current_timestamp();
+    record.timestamp = utils::resolve_timestamp(timestamp_override);
     record.type = "SSH";
     record.host = host;
     record.port = port;

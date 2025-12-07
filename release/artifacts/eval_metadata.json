@@ -1,0 +1,19 @@
+{
+  "created": "2024-01-01T00:00:00.000Z",
+  "hosts_file": "../data/demo_hosts.txt",
+  "seed": 1337,
+  "hosts": [
+  ],
+  "failed": [
+    {
+      "type": "SSH",
+      "host": "github.com",
+      "port": 22
+    },
+    {
+      "type": "TLS",
+      "host": "example.com",
+      "port": 443
+    }
+  ]
+}

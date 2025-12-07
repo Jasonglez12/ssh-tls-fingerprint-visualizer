@@ -1,0 +1,21 @@
+Generating evaluation dataset...
+
+Collecting SSH fingerprint for github.com:22...
+Collecting SSH fingerprint from github.com:22...
+Failed to collect SSH host key
+Collecting TLS fingerprint for example.com:443...
+Collecting TLS fingerprint from example.com:443...
+Error connecting to example.com:443
+Failed to collect TLS certificate
+
+=== Evaluation Dataset Summary ===
+
+✓ Successfully collected: 0
+
+✗ Failed: 2
+  SSH github.com:22
+  TLS example.com:443
+
+✓ Evaluation metadata saved to ../data/eval_metadata.json
+Using fixed timestamp: 2024-01-01T00:00:00.000Z
+No fingerprints found in ../data
