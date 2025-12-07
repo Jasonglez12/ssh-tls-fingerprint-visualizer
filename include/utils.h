@@ -12,6 +12,9 @@ namespace utils {
 // Get current timestamp in ISO 8601 format
 std::string get_current_timestamp();
 
+// Return a fixed timestamp when provided (CLI/env) or fall back to now
+std::string resolve_timestamp(const std::string& fixed_timestamp = "");
+
 // Format fingerprint as colon-separated hex string
 std::string format_fingerprint(const std::vector<uint8_t>& fingerprint);
 

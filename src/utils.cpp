@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <algorithm>
 #include <cctype>
+#include <cstdlib>
 
 namespace utils {
 
@@ -10,11 +11,28 @@ std::string get_current_timestamp() {
     auto time_t = std::chrono::system_clock::to_time_t(now);
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
         now.time_since_epoch()) % 1000;
-    
+
     std::stringstream ss;
     ss << std::put_time(std::gmtime(&time_t), "%Y-%m-%dT%H:%M:%S");
     ss << '.' << std::setfill('0') << std::setw(3) << ms.count() << "Z";
     return ss.str();
+}
+
+std::string resolve_timestamp(const std::string& fixed_timestamp) {
+    if (!fixed_timestamp.empty()) {
+        return fixed_timestamp;
+    }
+
+    const char* env_timestamp = std::getenv("DEMO_TIMESTAMP");
+    if (!env_timestamp || std::string(env_timestamp).empty()) {
+        env_timestamp = std::getenv("FIXED_TIMESTAMP");
+    }
+
+    if (env_timestamp && std::string(env_timestamp).length() > 0) {
+        return std::string(env_timestamp);
+    }
+
+    return get_current_timestamp();
 }
 
 std::string format_fingerprint(const std::vector<uint8_t>& fingerprint) {

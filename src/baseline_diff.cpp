@@ -32,7 +32,7 @@ public:
         return baseline;
     }
     
-    static void create_baseline(const std::string& data_dir, const std::string& output_file, const std::string& type = "") {
+    static void create_baseline(const std::string& data_dir, const std::string& output_file, const std::string& type = "", const std::string& fixed_timestamp = "") {
         FingerprintStorage storage(data_dir);
         auto latest = storage.load_latest(type);
         
@@ -45,7 +45,7 @@ public:
         std::vector<FingerprintRecord> baseline_records;
         for (const auto& [key, fingerprint] : latest) {
             FingerprintRecord record;
-            record.timestamp = utils::get_current_timestamp();
+            record.timestamp = utils::resolve_timestamp(fixed_timestamp);
             record.type = std::get<0>(key);
             record.host = std::get<1>(key);
             record.port = std::get<2>(key);
@@ -115,6 +115,7 @@ int main(int argc, char* argv[]) {
     std::string data_dir = "data";
     std::string type = "";
     std::string output_file = "";
+    std::string timestamp_override;
     
     // Parse arguments
     for (int i = 2; i < argc; ++i) {
@@ -127,11 +128,16 @@ int main(int argc, char* argv[]) {
             type = argv[++i];
         } else if (arg == "--output" && i + 1 < argc) {
             output_file = argv[++i];
+        } else if (arg == "--timestamp" && i + 1 < argc) {
+            timestamp_override = argv[++i];
         }
     }
     
     if (action == "create") {
-        BaselineManager::create_baseline(data_dir, baseline_file, type);
+        if (!timestamp_override.empty()) {
+            std::cout << "Using fixed timestamp: " << timestamp_override << std::endl;
+        }
+        BaselineManager::create_baseline(data_dir, baseline_file, type, timestamp_override);
     } else if (action == "diff") {
         auto baseline = BaselineManager::load_baseline(baseline_file);
         if (baseline.empty()) {
@@ -178,7 +184,7 @@ int main(int argc, char* argv[]) {
         if (!output_file.empty()) {
             std::ofstream file(output_file);
             file << "{\n";
-            file << "  \"timestamp\": \"" << utils::get_current_timestamp() << "\",\n";
+            file << "  \"timestamp\": \"" << utils::resolve_timestamp(timestamp_override) << "\",\n";
             file << "  \"summary\": {\n";
             file << "    \"changed_count\": " << diff_result.changed.size() << ",\n";
             file << "    \"new_count\": " << diff_result.new_records.size() << ",\n";
