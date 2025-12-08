@@ -110,3 +110,32 @@ install(TARGETS fingerprint_tls fingerprint_ssh baseline_diff visualize generate
 # Create data directory
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/data)
 
+# Enable testing
+enable_testing()
+
+# Test executables
+# Alpha tests: Integration tests
+add_executable(test_integration tests/test_integration.cpp)
+target_link_libraries(test_integration fingerprint_common)
+if(WIN32)
+    target_link_libraries(test_integration ws2_32)
+endif()
+
+# Beta tests: Unit tests
+add_executable(test_utils tests/test_utils.cpp)
+target_link_libraries(test_utils fingerprint_common)
+if(WIN32)
+    target_link_libraries(test_utils ws2_32)
+endif()
+
+# Add tests to CTest
+add_test(NAME IntegrationTests COMMAND test_integration)
+add_test(NAME UnitTests COMMAND test_utils)
+
+# Test target for convenience (renamed from "test" because it's reserved by CTest)
+add_custom_target(run-tests
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+    DEPENDS test_integration test_utils
+    COMMENT "Running all tests"
+)
+

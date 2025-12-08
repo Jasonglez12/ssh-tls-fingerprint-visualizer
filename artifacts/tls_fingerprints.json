@@ -1,0 +1,51 @@
+[
+  {
+    "timestamp": """""""2025-12-08T02:02:49.076Z""""""",
+    "type": """""""TLS""""""",
+    "host": """""""github.com""""""",
+    "port": 443,
+    "fingerprint": "B8:BB:81:87:68:33:87:39:42:04:5A:8D:F8:F0:62:19:E0:06:02:EB:CB:43:84:C7:AB:C2:4F:18:37:9C:87:F5"
+  },
+  {
+    "timestamp": """"""2025-12-08T02:02:50.133Z"""""",
+    "type": """"""TLS"""""",
+    "host": """"""google.com"""""",
+    "port": 443,
+    "fingerprint": "D5:12:96:35:A0:50:F6:3D:D6:07:FF:A9:27:1E:EF:AA:B5:97:C0:97:58:09:76:5D:AD:25:39:73:FC:55:4D:25"
+  },
+  {
+    "timestamp": """""2025-12-08T02:02:51.247Z""""",
+    "type": """""TLS""""",
+    "host": """""github.com""""",
+    "port": 443,
+    "fingerprint": "B8:BB:81:87:68:33:87:39:42:04:5A:8D:F8:F0:62:19:E0:06:02:EB:CB:43:84:C7:AB:C2:4F:18:37:9C:87:F5"
+  },
+  {
+    "timestamp": """"2025-12-08T02:02:52.386Z"""",
+    "type": """"TLS"""",
+    "host": """"github.com"""",
+    "port": 443,
+    "fingerprint": "B8:BB:81:87:68:33:87:39:42:04:5A:8D:F8:F0:62:19:E0:06:02:EB:CB:43:84:C7:AB:C2:4F:18:37:9C:87:F5"
+  },
+  {
+    "timestamp": """2025-12-08T02:02:53.352Z""",
+    "type": """TLS""",
+    "host": """google.com""",
+    "port": 443,
+    "fingerprint": "D5:12:96:35:A0:50:F6:3D:D6:07:FF:A9:27:1E:EF:AA:B5:97:C0:97:58:09:76:5D:AD:25:39:73:FC:55:4D:25"
+  },
+  {
+    "timestamp": ""2025-12-08T02:02:53.415Z"",
+    "type": ""TLS"",
+    "host": ""example.com"",
+    "port": 443,
+    "fingerprint": "BA:56:C4:EE:2A:1C:8D:B7:10:BF:E7:3A:1F:A3:E4:B0:AD:3F:29:0D:01:92:58:9B:8C:71:DE:44:99:61:C6:96"
+  },
+  {
+    "timestamp": "2025-12-08T02:02:53.485Z",
+    "type": "TLS",
+    "host": "www.cloudflare.com",
+    "port": 443,
+    "fingerprint": "B4:C5:38:EC:17:C0:E1:B3:E2:CE:DD:34:41:8F:4C:AC:E5:9D:FA:0A:DE:44:4F:E3:0A:50:60:62:D5:2E:D1:F0"
+  }
+]

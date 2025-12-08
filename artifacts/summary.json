@@ -1,0 +1,29 @@
+{
+  "type": "summary",
+  "data": [
+    {
+      "host": """"github.com"""",
+      "tls_count": 0,
+      "ssh_count": 0,
+      "ja3_count": 0,
+      "ja3s_count": 0,
+      "unique_fingerprints": 1
+    },
+    {
+      "host": """google.com""",
+      "tls_count": 0,
+      "ssh_count": 0,
+      "ja3_count": 0,
+      "ja3s_count": 0,
+      "unique_fingerprints": 1
+    },
+    {
+      "host": ""github.com"",
+      "tls_count": 0,
+      "ssh_count": 0,
+      "ja3_count": 0,
+      "ja3s_count": 0,
+      "unique_fingerprints": 1
+    }
+  ]
+}

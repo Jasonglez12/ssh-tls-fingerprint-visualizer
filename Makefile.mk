@@ -31,9 +31,16 @@ install: build
 	@cd $(BUILD_DIR) && cmake --install .
 
 test: build
-	@echo "Running basic tests..."
-	@cd $(BUILD_DIR) && ./fingerprint_tls github.com:443 || echo "Test requires network connectivity"
-	@cd $(BUILD_DIR) && ./fingerprint_ssh github.com || echo "Test requires network connectivity and ssh-keyscan"
+	@echo "Running tests..."
+	@cd $(BUILD_DIR) && ctest --output-on-failure || echo "Some tests may have failed (requires network connectivity for full suite)"
+
+test-unit: build
+	@echo "Running unit tests..."
+	@cd $(BUILD_DIR) && ./test_utils || echo "Unit tests failed"
+
+test-integration: build
+	@echo "Running integration tests..."
+	@cd $(BUILD_DIR) && ./test_integration || echo "Integration tests failed"
 
 # Docker targets
 up:

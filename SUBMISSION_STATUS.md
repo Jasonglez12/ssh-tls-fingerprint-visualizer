@@ -129,7 +129,7 @@
 
 ### Important (For Full Points)
 3. ⚠️ **Generate Sample Artifacts** - Run demo and populate `artifacts/release/` with actual files
-4. ⚠️ **Add CI Badges** - Update README.md with GitHub Actions badges
+4. ✅ **Add CI Badges** - README.md updated with GitHub Actions badge
 5. ⚠️ **Final Testing** - Test on fresh clone to ensure ≤5 minute setup time
 
 ### Optional Enhancements
@@ -154,22 +154,27 @@
 - ✅ `artifacts/release/` - Directory structure with README
 
 **Key Files Updated:**
-- ✅ `Makefile.mk` - Added `demo` and `up` targets
+- ✅ `Makefile.mk` - Added `demo`, `up`, and improved `test` targets
 - ✅ `docker-compose.yml` - Full C++ build environment
-- ⚠️ `CMakeLists.txt` - Could add test targets (tests work standalone)
-- ⚠️ `README.md` - Could add CI badges and demo video link
+- ✅ `CMakeLists.txt` - Added test configuration (enable_testing, test targets)
+- ✅ `README.md` - Added CI badge, updated with Docker instructions
+- ✅ `.github/workflows/ci.yml` - Enhanced coverage reporting
+- ✅ `RUN_INSTRUCTIONS.md` - Updated with Docker as primary option
 
 **Remaining Tasks:**
 - [ ] Test Docker setup on clean environment
 - [ ] Record demo video/GIF (≤2 minutes)
 - [ ] Generate sample artifacts (run demo and copy outputs)
-- [ ] Add CI badges to README
+- [x] Add CI badges to README
 
 ---
 
-**Current Progress: ~85% Complete**  
-**Estimated Time Remaining: 2-4 hours** (testing + demo video)  
+**Current Progress: ~90% Complete**  
+**Estimated Time Remaining: 1-2 hours** (testing + demo video)  
 **Deadline: Check your course schedule**
+
+**New Files Created:**
+- ✅ `SUBMISSION_CHECKLIST.md` - Complete checklist aligned with grading rubric
 
 ## 🎉 Major Accomplishments
 

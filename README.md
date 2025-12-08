@@ -1,5 +1,7 @@
 # SSH/TLS Fingerprint Visualizer
 
+[![CI](https://github.com/Jasonglez12/ssh-tls-fingerprint-visualizer/workflows/CI/badge.svg)](https://github.com/Jasonglez12/ssh-tls-fingerprint-visualizer/actions)
+
 Collect, baseline, and visualize **SSH host-key** and **TLS certificate** fingerprints to verify hosts and detect drift.  
 Solo scope uses SHA-256 for SSH/TLS. Pair uplift adds **JA3/JA3S** (from PCAP), drift alerts, and richer charts.
 
@@ -37,16 +39,61 @@ Solo scope uses SHA-256 for SSH/TLS. Pair uplift adds **JA3/JA3S** (from PCAP), 
 
 ### Using Docker (Recommended)
 
+**Bash/Linux/macOS/Git Bash:**
 ```bash
-# Clone repository
+# 1. Clone repository
 git clone <repository-url>
 cd ssh-tls-fingerprint-visualizer
 
-# Build and run demo
-make up && make demo
+# 2. Build Docker image and start container
+make up
+
+# 3. Run complete end-to-end demonstration
+make demo
+
+# 4. Stop container when done
+make down
 ```
 
-This will build the Docker image and run a complete end-to-end demonstration.
+**Windows PowerShell:**
+```powershell
+# 1. Clone repository
+git clone <repository-url>
+cd ssh-tls-fingerprint-visualizer
+
+# 2. Build Docker image
+docker compose build
+
+# 3. Start container
+docker compose up -d
+
+# 4. Run complete end-to-end demonstration
+docker compose exec -T app /bin/bash /app/scripts/demo.sh
+
+# 5. Stop container when done
+docker compose down
+```
+
+📖 **Windows users:** See [WINDOWS_DOCKER.md](WINDOWS_DOCKER.md) for detailed Windows instructions.
+
+**What this does:**
+- Builds a Docker image with all dependencies (reproducible)
+- Compiles all executables inside the container
+- Runs a full demo: collect → baseline → compare → visualize
+- Generates artifacts in `artifacts/release/`
+
+**For interactive use:**
+```bash
+# Enter the container
+docker compose exec app /bin/bash
+
+# Run individual tools
+/app/fingerprint_tls github.com:443 --data-dir /app/data
+/app/visualize summary --data-dir /app/data
+```
+
+📖 **See [DOCKER_GUIDE.md](DOCKER_GUIDE.md) for detailed Docker instructions and troubleshooting.**  
+📖 **Windows users:** See [WINDOWS_DOCKER.md](WINDOWS_DOCKER.md) for PowerShell-specific instructions.
 
 ### Native Build
 
@@ -109,14 +156,20 @@ cmake --build .
 
 ## Documentation
 
+### Getting Started
+- **[Docker Guide](DOCKER_GUIDE.md)** - Comprehensive Docker instructions for reproducible setup ⭐
+- **[Reproducible Setup](REPRODUCIBLE_SETUP.md)** - Quick reference for one-command setup
+- **[Quick Start](QUICK_START.md)** - Quick start guide for Windows users
+- **[Build Instructions](BUILD.md)** - Detailed build instructions
+- **[Run Instructions](RUN_INSTRUCTIONS.md)** - How to run the project
+
+### Technical Documentation
 - **[Architecture](docs/ARCHITECTURE.md)** - System design, components, and data flow
 - **[Runbook](docs/RUNBOOK.md)** - Operational guide with rebuild instructions and troubleshooting
 - **[Security](docs/SECURITY.md)** - Security invariants, hardening measures, and threat model
 - **[Summary](docs/SUMMARY.md)** - What works and what's next
 - **[Evaluation](EVALUATION.md)** - Initial results and observations
 - **[PCAP Analysis Guide](PCAP_ANALYSIS.md)** - Using the PCAP analysis tool
-- **[Quick Start](QUICK_START.md)** - Quick start guide for Windows users
-- **[Build Instructions](BUILD.md)** - Detailed build instructions
 
 **Milestones:** Week 10 (Proposal) ✅ • Week 12 (Alpha) ✅ • Week 14 (Beta) ✅ • Week 16 (Final) ✅
 

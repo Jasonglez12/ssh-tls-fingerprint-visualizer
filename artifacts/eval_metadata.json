@@ -1,0 +1,32 @@
+{
+  "created": "2025-12-08T02:02:53.493Z",
+  "hosts": [
+    {
+      "type": "TLS",
+      "host": "github.com",
+      "port": 443
+    },
+    {
+      "type": "SSH",
+      "host": "github.com",
+      "port": 22
+    },
+    {
+      "type": "TLS",
+      "host": "google.com",
+      "port": 443
+    },
+    {
+      "type": "TLS",
+      "host": "example.com",
+      "port": 443
+    },
+    {
+      "type": "TLS",
+      "host": "www.cloudflare.com",
+      "port": 443
+    }
+  ],
+  "failed": [
+  ]
+}

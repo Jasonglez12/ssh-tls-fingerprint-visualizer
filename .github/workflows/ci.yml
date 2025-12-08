@@ -106,4 +106,11 @@ jobs:
       with:
         name: coverage-summary
         path: coverage.md
+    
+    - name: Display coverage summary
+      run: |
+        if [ -f coverage.md ]; then
+          echo "## Test Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          cat coverage.md >> $GITHUB_STEP_SUMMARY
+        fi
 

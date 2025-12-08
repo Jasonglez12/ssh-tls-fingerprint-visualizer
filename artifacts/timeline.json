@@ -1,0 +1,29 @@
+{
+  "type": "timeline",
+  "data": [
+    {
+      "type": """"TLS"""",
+      "host": """"github.com"""",
+      "port": 443,
+      "points": [
+        {"time": """"2025-12-08T02:02:49.076Z"""", "count": 1}
+      ]
+    },
+    {
+      "type": """TLS""",
+      "host": """google.com""",
+      "port": 443,
+      "points": [
+        {"time": """2025-12-08T02:02:50.133Z""", "count": 1}
+      ]
+    },
+    {
+      "type": ""TLS"",
+      "host": ""github.com"",
+      "port": 443,
+      "points": [
+        {"time": ""2025-12-08T02:02:51.247Z"", "count": 1}
+      ]
+    }
+  ]
+}

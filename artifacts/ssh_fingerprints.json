@@ -1,0 +1,9 @@
+[
+  {
+    "timestamp": "2025-12-08T02:02:53.255Z",
+    "type": "SSH",
+    "host": "github.com",
+    "port": 22,
+    "fingerprint": "A7:64:00:31:73:48:0B:54:C9:61:67:88:3A:DB:6B:55:CF:7C:FD:1D:41:50:55:AE:DF:F2:E2:C8:A8:14:7D:03"
+  }
+]

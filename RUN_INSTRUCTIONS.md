@@ -37,7 +37,9 @@ make down
 docker compose exec app /bin/bash
 ```
 
-See [docs/RUNBOOK.md](docs/RUNBOOK.md) for detailed Docker instructions and troubleshooting.
+📖 **See [DOCKER_GUIDE.md](DOCKER_GUIDE.md) for comprehensive Docker instructions, troubleshooting, and reproducible setup guide.**
+
+See also [docs/RUNBOOK.md](docs/RUNBOOK.md) for operational runbook details.
 
 ---
 

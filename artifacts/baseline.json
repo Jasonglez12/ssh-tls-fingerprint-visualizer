@@ -1,0 +1,16 @@
+[
+  {
+    "type": """TLS""",
+    "host": """github.com""",
+    "port": 443,
+    "fingerprint": "B8:BB:81:87:68:33:87:39:42:04:5A:8D:F8:F0:62:19:E0:06:02:EB:CB:43:84:C7:AB:C2:4F:18:37:9C:87:F5",
+    "baseline_date": "2025-12-08T02:02:51.149Z"
+  },
+  {
+    "type": ""TLS"",
+    "host": ""google.com"",
+    "port": 443,
+    "fingerprint": "D5:12:96:35:A0:50:F6:3D:D6:07:FF:A9:27:1E:EF:AA:B5:97:C0:97:58:09:76:5D:AD:25:39:73:FC:55:4D:25",
+    "baseline_date": "2025-12-08T02:02:51.149Z"
+  }
+]

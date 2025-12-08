@@ -22,6 +22,7 @@ WORKDIR /build
 COPY CMakeLists.txt ./
 COPY include/ ./include/
 COPY src/ ./src/
+COPY tests/ ./tests/
 COPY Makefile.mk ./
 
 # Configure and build
@@ -56,7 +57,9 @@ COPY --from=builder /build/build/fingerprint_pcap /app/
 
 # Copy scripts directory
 COPY scripts/ /app/scripts/
-RUN chmod +x /app/scripts/*.sh 2>/dev/null || true
+# Convert Windows line endings (CRLF) to Unix (LF) and make executable
+RUN sed -i 's/\r$//' /app/scripts/*.sh 2>/dev/null || true && \
+    chmod +x /app/scripts/*.sh 2>/dev/null || true
 
 # Set working directory
 WORKDIR /app
