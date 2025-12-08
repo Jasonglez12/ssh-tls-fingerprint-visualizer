@@ -1,0 +1,5 @@
+2025-12-08 04:37:40,238 - INFO - Starting Fingerprint Collection Cycle
+2025-12-08 04:37:40,240 - INFO - Processing target: github.com
+2025-12-08 04:37:40,867 - INFO - Processing target: google.com
+2025-12-08 04:37:40,922 - INFO - Processing target: example.com
+2025-12-08 04:37:40,993 - INFO - Successfully wrote 3 records to artifacts/release/fingerprints.csv
